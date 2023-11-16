@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { SeoService } from './seo.service';
+import { SeoController } from './seo.controller';
+import { LoggerMiddleware } from 'src/middleware/logger.middleware';
 
 @Module({
-  imports: [],
-  controllers: [],
-  providers: [],
+  controllers: [SeoController],
+  providers: [SeoService],
 })
-export class SeoModule {}
+export class SeoModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes(SeoController);
+  }
+}

@@ -1,19 +1,34 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Query,
+} from '@nestjs/common';
+import { SeoService } from './seo.service';
 
 @Controller('feature')
-export class FeatureController {
+export class SeoController {
+  constructor(private seoService: SeoService) {}
+
   @Get('seo_metadata')
-  titleAndH1(): string {
-    return 'title and h1';
+  titleAndH1() {
+    return { title: 'title here', h1: 'h1 here' };
   }
 
-  @Get('cat')
-  handleCat(@Param('fish') cat: string) {
-    return cat;
+  @Get('param/:p')
+  handleParam(@Param('p') p: string) {
+    return this.seoService.handleCat(p);
   }
 
-  @Get('fishQ')
-  handleFish(@Query() q: { name: string }) {
-    return `The query was ${q.name}`;
+  @Get('query')
+  handleFish(@Query('name') name: string) {
+    return this.seoService.handleFish(name);
+  }
+
+  @Get('forbidden')
+  forbidden() {
+    throw new HttpException('Forbidden Route', HttpStatus.FORBIDDEN);
   }
 }
