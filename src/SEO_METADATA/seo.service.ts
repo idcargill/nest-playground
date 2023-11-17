@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
-
+import { getSeoServiceConfig } from 'src/config';
 @Injectable()
 export class SeoService {
-  public handleCat(param: string) {
+  public handleParam(param: string) {
     return `Seo Service received param: ${param}`;
   }
 
-  public handleFish(query: string) {
+  public handleQuery(query: string) {
     return `Seo Service received query item: ${query}`;
+  }
+
+  public handleEnvTest() {
+    const { test } = getSeoServiceConfig();
+    return `Env Variable: ${test}`;
   }
 }

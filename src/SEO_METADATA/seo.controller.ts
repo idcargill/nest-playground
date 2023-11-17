@@ -19,16 +19,27 @@ export class SeoController {
 
   @Get('param/:p')
   handleParam(@Param('p') p: string) {
-    return this.seoService.handleCat(p);
+    return this.seoService.handleParam(p);
   }
 
   @Get('query')
-  handleFish(@Query('name') name: string) {
-    return this.seoService.handleFish(name);
+  handleQuery(@Query('name') name: string) {
+    if (!name) {
+      throw new HttpException(
+        'Query must contain "name"',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.seoService.handleQuery(name);
   }
 
   @Get('forbidden')
   forbidden() {
     throw new HttpException('Forbidden Route', HttpStatus.FORBIDDEN);
+  }
+
+  @Get('env')
+  handleEnv() {
+    return this.seoService.handleEnvTest();
   }
 }
